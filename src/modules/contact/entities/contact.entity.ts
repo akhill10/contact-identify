@@ -1,6 +1,14 @@
 import { IsNotEmpty } from 'class-validator';
-import { Common } from 'src/common/entities/common.entity';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
+} from 'typeorm';
 
 export enum ContactLinkPrecedence {
   PRIMARY = 'primary',
@@ -8,17 +16,17 @@ export enum ContactLinkPrecedence {
 }
 
 @Entity()
-export class Contact extends Common {
+export class Contact {
   @PrimaryGeneratedColumn()
   id: number;
 
   @IsNotEmpty()
-  @Column({ nullable: false })
-  phoneNumber: string;
+  @Column({ nullable: true })
+  phoneNumber?: string;
 
   @IsNotEmpty()
-  @Column({ nullable: false })
-  email: string;
+  @Column({ nullable: true })
+  email?: string;
 
   @ManyToOne(() => Contact, (contact) => contact.linkedContacts, {
     onUpdate: 'CASCADE',
@@ -30,4 +38,13 @@ export class Contact extends Common {
 
   @Column({ enum: ContactLinkPrecedence })
   linkPrecedence: ContactLinkPrecedence;
+
+  @CreateDateColumn()
+  createdAt?: Date;
+
+  @UpdateDateColumn()
+  updatedAt?: Date;
+
+  @DeleteDateColumn({ select: false })
+  deletedAt?: Date;
 }
