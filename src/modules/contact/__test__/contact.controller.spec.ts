@@ -8,8 +8,6 @@ import { ContactService } from '../contact.service';
 import { Repository, EntityManager } from 'typeorm';
 import { Contact } from '../entities/contact.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { ApiResponse } from '../../../common/config/apiresponse';
-import { HttpStatus } from '@nestjs/common';
 
 describe('contactController', () => {
   let controller: ContactController;
