@@ -3,39 +3,39 @@ import {
   MockType,
   repositoryMockFactory,
 } from '../../../common/mocks/mock.factory';
-import { UsersController } from '../users.controller';
-import { UsersService } from '../users.service';
+import { ContactController } from '../contact.controller';
+import { ContactService } from '../contact.service';
 import { Repository, EntityManager } from 'typeorm';
-import { Users } from '../entities/users.entity';
+import { Contact } from '../entities/contact.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { ApiResponse } from '../../../common/config/apiresponse';
 import { HttpStatus } from '@nestjs/common';
 
-describe('AttendeeController', () => {
-  let controller: UsersController;
-  let service: UsersService;
-  let repositoryMock: MockType<Repository<Users>>;
+describe('contactController', () => {
+  let controller: ContactController;
+  let service: ContactService;
+  let repositoryMock: MockType<Repository<Contact>>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [UsersController],
+      controllers: [ContactController],
       providers: [
-        UsersService,
+        ContactService,
         EntityManager,
         {
-          provide: UsersService,
+          provide: ContactService,
           useValue: { ...repositoryMock, getAll: jest.fn() },
         },
         {
-          provide: getRepositoryToken(Users),
+          provide: getRepositoryToken(Contact),
           useFactory: repositoryMockFactory,
         },
       ],
     }).compile();
 
-    controller = module.get<UsersController>(UsersController);
-    service = module.get<UsersService>(UsersService);
-    repositoryMock = module.get(getRepositoryToken(Users));
+    controller = module.get<ContactController>(ContactController);
+    service = module.get<ContactService>(ContactService);
+    repositoryMock = module.get(getRepositoryToken(Contact));
   });
 
   it('should be defined', () => {

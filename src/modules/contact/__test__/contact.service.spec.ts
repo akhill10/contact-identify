@@ -1,48 +1,44 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UsersService } from '../users.service';
+import { ContactService } from '../contact.service';
 import { Repository, EntityManager } from 'typeorm';
 import {
   MockType,
   repositoryMockFactory,
 } from '../../../common/mocks/mock.factory';
-import { Users } from '../entities/users.entity';
+import { Contact } from '../entities/contact.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 
-describe('AttendeeService', () => {
-  const attendee = {
-    last_name: '',
-    first_name: '',
-  };
+describe('contactService', () => {
 
-  let service: UsersService;
-  let repositoryMock: MockType<Repository<Users>>;
+  let service: ContactService;
+  let repositoryMock: MockType<Repository<Contact>>;
   let entityManagerMock: MockType<EntityManager>;
-  let productsRepository: Repository<Users>;
-  -beforeEach(async () => {
+  let productsRepository: Repository<Contact>;
+  beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        UsersService,
+        ContactService,
         EntityManager,
         {
           provide: EntityManager,
           useValue: { ...repositoryMock, save: jest.fn() },
         },
         {
-          provide: UsersService,
+          provide: ContactService,
           useValue: repositoryMock,
         },
-        UsersService,
+        ContactService,
         {
-          provide: getRepositoryToken(Users),
+          provide: getRepositoryToken(Contact),
           useFactory: repositoryMockFactory,
         },
       ],
     }).compile();
 
-    service = module.get<UsersService>(UsersService);
-    repositoryMock = module.get(getRepositoryToken(Users));
-    productsRepository = module.get<Repository<Users>>(
-      getRepositoryToken(Users),
+    service = module.get<ContactService>(ContactService);
+    repositoryMock = module.get(getRepositoryToken(Contact));
+    productsRepository = module.get<Repository<Contact>>(
+      getRepositoryToken(Contact),
     );
     entityManagerMock = module.get(EntityManager);
   });
