@@ -1,0 +1,32 @@
+FROM node AS build
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+RUN npm run build
+
+FROM node:lts-alpine as production
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
+RUN npm config delete proxy
+RUN npm config delete http-proxy
+RUN npm config delete https-proxy
+
+RUN npm install --omit=dev
+
+COPY --from=build /usr/src/app/dist ./dist
+COPY --from=build /usr/src/app/dist ./dist
+
+ENV NODE_ENV=production
+
+EXPOSE 3000
+
+CMD npx typeorm migration:run -d ./dist/ormconfig.js && node ./dist/src/main
