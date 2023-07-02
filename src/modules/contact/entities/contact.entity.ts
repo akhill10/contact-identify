@@ -7,6 +7,7 @@ import {
   OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
+  Index,
   DeleteDateColumn,
 } from 'typeorm';
 
@@ -16,6 +17,8 @@ export enum ContactLinkPrecedence {
 }
 
 @Entity()
+@Index(['email'])
+@Index(['phoneNumber'])
 export class Contact {
   @PrimaryGeneratedColumn()
   id: number;
