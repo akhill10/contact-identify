@@ -1,9 +1,23 @@
-# Nestjs Template with typeorm 
+# Identity Reconciliation
 
-## Description
+## Project Run 
+```bash
+$ bash project_run.sh
+```
+- The above command creates a .env file and executes `docker compose up`. It will spin up the API server and the database. 
+- The Api Server runs on port `4000`
 
-This is a template for nestjs with typeorm. It is based on the nestjs cli and 
-
+## Contact Identify endpoint
+POST - `http://localhost:4000/api/contacts/identify` 
+Sample Curl : 
+```bash
+curl --location 'http://localhost:4000/api/contacts/identify' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "email": "test@test.com",
+    "phoneNumber": "+912837483849"
+}'
+```
 
 ## Installation
 
@@ -14,7 +28,7 @@ $ npm install
 ## Start docker container
 
 ```bash
-$ npm run db:start
+$ npm run database
 ```
 
 ## Running the app
@@ -35,12 +49,6 @@ $ npm run start:prod
 ```bash
 # unit tests
 $ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
 
 ## Migrations
