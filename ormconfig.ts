@@ -15,4 +15,10 @@ export const AppDataSource = new DataSource({
   migrationsRun: true,
   migrations: ['dist/**/migrations/*.js'],
   migrationsTableName: 'history',
+  ssl: true,
+  extra: {
+      ssl: {
+          rejectUnauthorized: false,
+      },
+  },
 });
