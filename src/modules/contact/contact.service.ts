@@ -16,7 +16,7 @@ export class ContactService {
 
   async getAll(): Promise<ApiResponse<Contact[]>> {
     const result = await this.contactRepository.find();
-    return ApiResponse(HttpStatus.OK, 'Data retrieved successfully', result);
+    return ApiResponse('Data retrieved successfully', result);
   }
 
   async identify(dto: IdentifyContactDto) {
@@ -78,11 +78,21 @@ export class ContactService {
           linked: primaryContact,
         });
 
-        return this.prepareIdentifyContactResponse([
-          primaryContact,
-          ...primaryContacts[0].linkedContacts,
-          secondaryContact,
-        ]);
+        const orderedContacts = [primaryContact];
+
+        if (primaryContacts[0]?.linkedContacts?.length) 
+          orderedContacts.push(...primaryContacts[0]?.linkedContacts)
+
+        orderedContacts.push(secondaryContact);
+        return this.prepareIdentifyContactResponse(orderedContacts);
+      }
+      else {
+        const orderedContacts = [primaryContact];
+
+        if (primaryContacts[0]?.linkedContacts?.length) 
+          orderedContacts.push(...primaryContacts[0]?.linkedContacts);
+        
+        return this.prepareIdentifyContactResponse(orderedContacts);
       }
     } else {
       // convert newest primary contact into secondary.
@@ -98,11 +108,13 @@ export class ContactService {
         newSecondaryContact,
       );
 
-      return this.prepareIdentifyContactResponse([
-        primaryContacts[0],
-        ...primaryContacts[0].linkedContacts,
-        newSecondaryContact,
-      ]);
+      const orderedContacts = [primaryContacts[0]];
+
+      if (primaryContacts[0]?.linkedContacts?.length) 
+        orderedContacts.push(...primaryContacts[0]?.linkedContacts)
+
+      orderedContacts.push(newSecondaryContact);
+      return this.prepareIdentifyContactResponse(orderedContacts);
     }
   }
 
@@ -122,7 +134,7 @@ export class ContactService {
   private prepareIdentifyContactResponse(
     orderedContacts: Contact[],
   ): ApiResponse<IdentifyContactResponse> {
-    return ApiResponse(HttpStatus.OK, 'Contact identify sucessfully', {
+    return ApiResponse('Contact identify sucessfull', {
       contact: {
         primaryContactId: orderedContacts[0].id,
         emails: [
