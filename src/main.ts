@@ -20,6 +20,8 @@ async function bootstrap() {
   });
   const configService = app.get(ConfigService);
   app.useGlobalPipes(new ValidationPipe());
-  await app.listen(configService.get('PORT'));
+  const port = configService.get('PORT') || 3000;
+  await app.listen(port);
+  console.info('LISTENING ON PORT :: ', port);
 }
 bootstrap();
